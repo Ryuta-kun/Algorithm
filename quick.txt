@@ -1,0 +1,66 @@
+/*
+	クイックソート
+*/
+
+#include  <stdio.h>
+#include  <time.h>
+#define MIN 1
+#define MAX 99
+#define swap(type, x, y)	do { type t = x; x = y; y = t; } while (0)
+
+int median(int a[], int left, int right)
+{
+	int center = (left + right) / 2;
+	if (a[center] < a[left])
+		swap(int, a[left], a[center]);
+	if (a[right] < a[left])
+		swap(int, a[left], a[right]);
+	if (a[right]< a[center])
+		swap(int, a[center], a[right]);
+
+	swap(int, a[center], a[right - 1]);
+	return a[right - 1];
+}
+
+/*--- クイックソート ---*/
+void quick(int a[], int left, int right)
+{
+	int	 pl = left;			/* 左カーソル */
+	int	 pr = right;		/* 右カーソル */
+	int	 x = median(a, left, right);	/* 枢軸は中央の要素 */
+
+	do {
+		while (a[pl] < x) pl++;
+		while (a[pr] > x) pr--;
+		if (pl <= pr) {
+			swap(int, a[pl], a[pr]);
+			pl++;
+			pr--;
+		}
+	} while (pl <= pr);
+
+	if (left < pr)  quick(a, left, pr);
+	if (pl < right) quick(a, pl, right);
+}
+
+int main(void)
+{
+	int	 i;
+	int	 x[9];
+	int	 nx = sizeof(x) / sizeof(x[0]);
+	srand((unsigned)time(NULL));
+
+	printf("%d個の整数を入力せよ。\n", nx);
+	for (i = 0; i < nx; i++) {
+		printf("x[%d] : ", i);
+		x[i] = rand() % MAX + MIN;
+	}
+
+	quick(x, 0, nx - 1);					/* 配列xをクイックソート */
+
+	puts("\n昇順にソートしました。");
+	for (i = 0; i < nx; i++)
+		printf("x[%d] = %d\n", i, x[i]);
+
+	return (0);
+}

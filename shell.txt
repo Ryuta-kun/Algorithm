@@ -1,0 +1,50 @@
+/*
+	シェルソート
+*/
+
+#include  <stdio.h>
+#include  <time.h>
+#define MIN 1
+#define MAX 999
+#define swap(type, x, y)	do {type t = x; x = y; y = t; } while (0)
+
+/*--- シェルソート ---*/
+void ssort(int a[], int n)
+{
+	int  i, j, h, t;
+	for (h = 1; h < n / 3; h = h * 3 + 1)
+		;
+	for (; h > 0; h /= 3){
+		for (i = h; i < n; i++){
+			j = i;
+			while (j >= h && a[j - h] > a[j]){
+				t = a[j];
+				a[j] = a[j - h];
+				a[j - h] = t;
+				j -= h;
+			}
+		}
+	}
+}
+
+int main(void)
+{
+	int	 i;
+	int	 x[1000];
+	int	 nx = sizeof(x) / sizeof(x[0]);
+	srand((unsigned)time(NULL));
+
+	printf("%d個の整数を入力せよ。\n", nx);
+	for (i = 0; i < nx; i++) {
+		printf("x[%d] : ", i);
+		x[i] = rand() % MAX + MIN;
+	}
+
+	ssort(x, nx);			/* 配列xをシェルソート */
+
+	puts("\n昇順にソートしました。");
+	for (i = 0; i < nx; i++)
+		printf("x[%d] = %d\n", i, x[i]);
+
+	return (0);
+}

@@ -1,0 +1,51 @@
+/*
+sample01 単純交換ソート
+*/
+#include <stdio.h>
+#include <time.h>
+#define MIN 1
+#define MAX 99
+#define swap(type, x, y) do {type t = x; x = y; y = t; } while (0)
+/*--- 単純交換ソート ---*/
+void selection(int a[], int n){
+	int i, j, m, l, lowest, lowkey;
+	int ccnt = 0; //比較回数 を定義
+	int scnt = 0; // 交換回数 を定義
+
+	for (i = 0; i < n - 1; i++){
+		lowest = i;
+		lowkey = a[i];
+		for (j = i + 1; j < n; j++) {
+				if (a[j] < lowkey){
+					lowest = j;
+					lowkey = a[j];
+				}
+			ccnt++;
+		}
+		swap(int, a[lowest], a[i]);
+		scnt++;
+	}
+	printf("\n比較は%d回でした。\n", ccnt);
+	printf("交換は%d回でした。\n", scnt);
+}
+int main(void)
+{
+	int i;
+	int x[10];
+	int nx = sizeof(x) / sizeof(x[0]);
+	srand((unsigned)time(NULL));
+
+	printf("%d個の整数を入力せよ。\n", nx);
+	for (i = 0; i < nx; i++) {
+		printf("x[%d] : ", i);
+		x[i] = rand() % MAX + MIN;
+	}
+	selection(x, nx); /* 配列xを単
+					  純交換ソート */
+
+	puts("昇順にソートしました。");
+	for (i = 0; i < nx; i++)
+		printf("x[%d] = %d\n", i, x[i]);
+
+	return (0);
+}
